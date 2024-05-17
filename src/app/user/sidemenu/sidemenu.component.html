@@ -1,0 +1,40 @@
+<div class="ct_sidebar">
+    <div class="ct_close_btn">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="ct_logo">
+        <img src="assets/img/logo.svg" alt="">
+    </div>
+    <ul class="mb-0 ps-0 ct_menu_links mt-5">
+        <li [ngClass]="{ 'active': isActive('user/main/dashboard') }"><a routerLink="/user/main/dashboard"><i
+                    class="fa-solid fa-house me-2"></i>Home</a></li>
+        <li [ngClass]="{ 'active': isActive('user/main/event') }"><a routerLink="/user/main/event"><i
+                    class="fa-solid fa-calendar-check me-2"></i>Event</a></li>
+        <li [ngClass]="{ 'active': isActive('user/main/offers') }"><a routerLink="/user/main/offers"><i
+                    class="fa-solid fa-medal me-2"></i>Offers</a></li>
+
+        <li class="ct_custom_style_dropdown dropdown"><a href="javascript:void(0)" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                aria-expanded="false"><span><i class="fa-solid fa-file-circle-question"></i> Questionnaire</span><i
+                    class="fa-solid fa-chevron-down" style="margin-left: 10px;"></i></a>
+            <ul class="  dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li [ngClass]="{ '': isActive('user/main/questionnaire') }"><a class="dropdown-item"
+                        routerLink="/user/main/questionnaire">Questionnaire</a></li>
+                <li [ngClass]="{ 'active': isActive('user/main/add-question') }"><a class="dropdown-item"
+                        routerLink="/user/main/add-question">Add Question</a></li>
+            </ul>
+        </li>
+   
+        <li [ngClass]="{ 'active': isActive('user/main/gift-card') }">
+            <a routerLink="/user/main/gift-card"><i class="fa-solid fa-message me-2"></i>Gift Card</a>
+        </li>
+
+        <li [ngClass]="{ 'active': isActive('user/main/incoming-users') }">
+            <a routerLink="/user/main/incoming-users"><i class="fa-solid fa-message me-2"></i>Incoming-Users</a>
+        </li>
+
+        <li [ngClass]="{ 'active': isActive('user/main/chat') }">
+            <a routerLink="/user/main/chat"><i class="fa-solid fa-message me-2"></i>Chat</a>
+        </li>
+
+    </ul>
+</div>

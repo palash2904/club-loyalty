@@ -1,0 +1,54 @@
+<div class="ct_right_header">
+    <div class="ct_toggle_bar">
+        <i class="fa-solid fa-bars-staggered"></i>
+    </div>
+    <div class="d-flex  gap-2 ms-auto position-relative">
+        <div class="ct_notification" (click)="toggleNotificationDrop()">
+            <i class="fa-solid fa-bell"></i>
+            <div class="ct_notification_drop" [class.show]="showNotificationDrop" >
+                <ul>
+                    <li>
+                        <img src="assets/img/offer_1.png" alt="">
+                        <div class="ct_notification_cnt">
+                            <h6 class="mb-0">Lorem Ipsum</h6>
+                            <small>Today at 12:00 pm</small>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="assets/img/offer_1.png" alt="">
+                        <div class="ct_notification_cnt">
+                            <h6 class="mb-0">Lorem Ipsum</h6>
+                            <small>Today at 12:00 pm</small>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="assets/img/offer_1.png" alt="">
+                        <div class="ct_notification_cnt">
+                            <h6 class="mb-0">Lorem Ipsum</h6>
+                            <small>Today at 12:00 pm</small>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="assets/img/offer_1.png" alt="">
+                        <div class="ct_notification_cnt">
+                            <h6 class="mb-0">Lorem Ipsum</h6>
+                            <small>Today at 12:00 pm</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ct_my_account dropdown ms-auto">
+            <button class="ct_custom_btn py-2 px-4 w-auto dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                My Account
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" routerLink="/user/main/my-profile">My Profile</a></li>
+                <li><a class="dropdown-item" routerLink="/user/main/change-password">Change Password</a></li>
+                <li> <a class="dropdown-item" (click)="logOut()">Log Out</a></li>
+            </ul>
+
+        </div>
+    </div>
+</div>

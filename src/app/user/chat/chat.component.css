@@ -1,0 +1,10 @@
+.chatbox {
+  
+    height: calc(100vh - 208px);
+
+}
+.chatlist {
+ 
+    height: calc(100vh - 200px);
+  
+}

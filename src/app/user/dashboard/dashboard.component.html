@@ -1,0 +1,102 @@
+<div class="ct_middle_cnt">
+    <section class="mb-5">
+        <h3 class="mb-4"><strong>Welcome To <span style="color: #fe2f7a;"> Loyalty Club</span></strong></h3>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="ct_dash_Card">
+                    <i class="fa-solid fa-users"></i>
+                    <!-- <i class="fa-solid fa-circle-question"></i> -->
+                    <h4>Scratch Cards</h4>
+                    <p>{{scratchCards}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+
+                <div class="ct_dash_Card">
+                    <i class="fa-solid fa-users"></i>
+                    <h4>Users</h4>
+                    <p>{{users}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="ct_dash_Card">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <h4>Events</h4>
+                    <p>{{events}}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="ct_dash_Card">
+                    <i class="fa-solid fa-trophy"></i>
+                    <h4>Offers</h4>
+                    <p>{{offers}}</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="mb-5">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+            <h2 class="ct_h2">All Users</h2>
+            <button (click)="downloadExcel()" class="ct_custom_btn py-2 px-4 w-auto">Download</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table ct_custom_table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Number</th>
+                        <th>Gender</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>
+                            <div (click)="showImg(row.avatar_url)" class="ct_event_img" style="cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#img">
+                                <img [src]="row.avatar_url" alt="img">
+                            </div>
+                        </td>
+                        <td>{{row.full_name}}</td>
+                        <td>{{row.email}}</td>
+                        <td>{{row.phone_no}}</td>
+                        <td>{{row.gender}}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2 justify-content-end">
+                                <label class="switch" for="">
+                                    <input type="checkbox" [(ngModel)]="row.isActive"
+                                        (click)="handleCheckboxChange(row)">
+                                    <span class="check"></span>
+                                </label>
+
+                                <button class="ct_action_btn ct_dlt_btn" (click)="deleteField(row.id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <div *ngIf="(data?.length == 0)" class="no-item-found">
+                    No item found
+                </div>
+                
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- Add Event -->
+<div class="modal fade" id="img" tabindex="-1" aria-labelledby="ct_add_eventLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <img [src]="userImg" alt="img">
+        </div>
+    </div>
+</div>

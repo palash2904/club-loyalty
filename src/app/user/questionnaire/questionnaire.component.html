@@ -1,0 +1,49 @@
+<div class="ct_middle_cnt">
+    <section class="mb-5">
+     <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+         <h2 class="ct_h2">All Questionnaire</h2>
+         <!-- <button class="ct_custom_btn py-2 px-4 w-auto"  data-bs-toggle="modal" data-bs-target="#ct_add_offer">
+             <i class="fa-solid fa-plus"></i> Add Question
+         </button> -->
+     </div>
+     <div class="table-responsive">
+         <table class="table ct_custom_table">
+             <thead>
+                 <tr>
+                     <th>No.</th>
+                     <th>User Name</th>
+                     <th>Email</th>
+                     <th>Question</th>
+                     <th>Answer</th>
+                     <th class="text-end">Action</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr *ngFor="let row of data; let i = index">
+                     <td>{{i+1}}</td>
+                    <td>John Doe</td>
+                    <td>johndoe@gmail.com</td>
+                     <td>
+                         How would you rate the friendliness and efficiency of our staff?
+                     </td>
+                     <td>3/4</td>
+                   
+                     <td>
+                         <div class="d-flex align-items-center gap-2 justify-content-end">
+                             <!-- <button class="ct_action_btn ct_edit_btn" data-bs-toggle="modal" data-bs-target="#ct_edit_offer">
+                                 <i class="fa-solid fa-pen"></i>
+                             </button> -->
+                             <button class="ct_action_btn ct_dlt_btn">
+                                 <i class="fa-solid fa-trash"></i>
+                             </button>
+                         </div>
+                     </td>
+                 </tr>
+              
+             </tbody>
+         </table>
+     </div>
+   
+    </section>
+
+ </div>

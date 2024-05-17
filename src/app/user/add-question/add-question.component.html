@@ -1,0 +1,173 @@
+<div class="ct_middle_cnt">
+    <section class="mb-5">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+            <h2 class="ct_h2">All Questions</h2>
+            <button class="ct_custom_btn py-2 px-4 w-auto" data-bs-toggle="modal" data-bs-target="#ct_add_Question">
+                <i class="fa-solid fa-plus"></i> Add Questions
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table ct_custom_table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Question</th>
+                        <th>Option 1</th>
+                        <th>Option 2</th>
+                        <th>Option 3</th>
+                        <th>Option 4</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{row.title}}</td>
+                        <td>{{row.option_1}}</td>
+                        <td>{{row.option_2}}</td>
+                        <td>{{row.option_3}}</td>
+                        <td>{{row.option_4}}</td>
+
+                        <td>
+                            <div class="d-flex align-items-center gap-2 justify-content-end">
+                                <button class="ct_action_btn ct_edit_btn" data-bs-toggle="modal"
+                                    data-bs-target="#ct_edit_Question" (click)="patchUpdate(row)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="ct_action_btn ct_dlt_btn" (click)="deleteField(row.id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- Add Question -->
+<div class="modal fade" id="ct_add_Question" tabindex="-1" aria-labelledby="ct_add_QuestionLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 pb-5">
+                <div class="ct_event_modal">
+                    <h2 class="text-center mb-5 ct_h2">Add Question</h2>
+                    <form [formGroup]="newForm">
+                        <div class="ct_formField mb-3 ">
+                            <label for="" class="mb-2 ct_fw_600">Question</label>
+                            <textarea class="form-control" formControlName="title" required rows="4"></textarea>
+
+                            <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['title'].errors?.['required']">Title is
+                                required.
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 1</label>
+                                    <input type="text" required formControlName="option1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 2</label>
+                                    <input type="text" required formControlName="option2" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 3</label>
+                                    <input type="text" required formControlName="option3" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 4</label>
+                                    <input type="text" required formControlName="option4" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-center mt-5">
+                            <button type="button" (click)="onSubmit()" class="ct_custom_btn">Save Changes</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal
+                      data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Edit Offer -->
+<div class="modal fade" id="ct_edit_Question" tabindex="-1" aria-labelledby="ct_edit_QuestionLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 pb-5">
+                <div class="ct_event_modal">
+                    <h2 class="text-center mb-5 ct_h2">Edit Question</h2>
+                    <form [formGroup]="updateForm">
+                        <div class="ct_formField mb-3 ">
+                            <label for="" class="mb-2 ct_fw_600">Question</label>
+                            <textarea class="form-control" formControlName="title" rows="4"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 1</label>
+                                    <input type="text" required="" formControlName="option1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 2</label>
+                                    <input type="text" required="" formControlName="option2"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 3</label>
+                                    <input type="text" required="" formControlName="option3"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ct_formField mb-3 ">
+                                    <label for="" class="mb-2 ct_fw_600">Option 4</label>
+                                    <input type="text" required="" formControlName="option4"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-center mt-5">
+                            <button type="button" class="ct_custom_btn" (click)="onUpdate()">Save Changes</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal2
+                            data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

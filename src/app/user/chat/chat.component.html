@@ -1,0 +1,135 @@
+<div class="ct_middle_cnt">
+    <section class="mb-5">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+            <h2 class="ct_h2">Message</h2>
+        </div>
+        <section class="message-area">
+            <div class="chat-area row">
+                <!-- chatlist -->
+                <div class=" col-md-4">
+                    <div class="chatlist">
+                        <div class="modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="chat-header">
+                                    <div class="msg-search">
+                                        <input type="text" class="form-control" id="inlineFormInputGroup"
+                                            placeholder="Search" aria-label="search">
+                                    </div>
+                                </div>
+
+                                <div class="modal-body mt-4">
+                                    <!-- chat-list -->
+                                    <div class="chat-lists">
+                                        <div class="chat-list">
+                                            <!-- <a *ngFor="let data of roomId" [routerLink]="['/chat1/chatbox', data.chatRoomId]" class="d-flex align-items-center"> -->
+                                            <a *ngFor="let data of roomId" (click)="getChatId(data.chatRoomId)"
+                                                class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    <img class="img-fluid"
+                                                        src="https://mehedihtml.com/chatbox/assets/img/user.png"
+                                                        alt="user img">
+                                                    <!-- <span class="active"></span> -->
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h3 class="mb-0">{{data.chatRoomId}}</h3>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- chat-list -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- chatlist -->
+
+
+                <div class=" col-md-8">
+                    <!-- chatbox -->
+                    <div class="chatbox">
+                        <div class="modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="msg-head">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="d-flex align-items-center">
+                                                <span class="chat-icon"><img class="img-fluid"
+                                                        src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
+                                                        alt="image title"></span>
+                                                <div class="flex-shrink-0">
+                                                    <img class="img-fluid"
+                                                        src="https://mehedihtml.com/chatbox/assets/img/user.png"
+                                                        alt="user img">
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h3 class="mb-0">Mehedi Hasan</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <ul class="moreoption">
+                                                <li class="navbar nav-item dropdown">
+                                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                            class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Delete
+                                                                Chat</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-body">
+                                    <div class="msg-body" *ngFor="let msg of roomMsg" #message>
+                                        <ul>
+                                            <li class="sender" *ngIf="msg.senderId == chatId">
+                                                <p> {{msg.messageContent}} </p>
+                                                <span
+                                                    class="time">{{formatTimestamp(msg.messageTimeStampInMillis)}}</span>
+                                            </li>
+
+                                            <li class="repaly" *ngIf="userId == msg.senderId">
+                                                <p>{{msg.messageContent}}</p>
+                                                <span
+                                                    class="time">{{formatTimestamp(msg.messageTimeStampInMillis)}}</span>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                                <div class="send-box">
+                                    <form [formGroup]="newForm">
+                                        <input type="text" class="form-control" aria-label="message…"
+                                            placeholder="Write message…" formControlName="message">
+                                        <div class="d-flex align-items-center">
+                                            <div class="send-btns">
+                                                <div class="attach">
+                                                    <!-- <div class="button-wrapper">
+                                                        <span class="label">
+                                                            <i class="fa-solid fa-link"></i>
+                                                        </span><input type="file" name="upload" id="upload"
+                                                            class="upload-box" placeholder="Upload File"
+                                                            aria-label="Upload File" formControlName="file" 
+                                                            (change)="handleCommittedFileInput($event)">
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <button (click)="sendMessage()" type="button"><i class="fa fa-paper-plane"
+                                                    aria-hidden="true"></i>Send</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <app-chatbox></app-chatbox>
+                    <router-outlet></router-outlet> -->
+                </div>
+            </div>

@@ -1,0 +1,78 @@
+<div class="ct_middle_cnt">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="ct_my_profile_main">
+                <h2 class="mb-5 ct_h2">My Profile</h2>
+                <form [formGroup]="profileForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 ct_input">
+                                <input type="email" class="form-control" formControlName="name" id="floatingInput"
+                                    value="Mesut Arcand">
+                                <label for="floatingInput">Name</label>
+                                <div *ngIf="profileForm.controls['name'].invalid && profileForm.controls['name'].touched"
+                                    class="error-message">
+                                    <div *ngIf="profileForm.controls['name'].errors?.['required']">Please enter
+                                        your name.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 ct_input">
+                                <input type="email" class="form-control" id="floatingInput"
+                                    formControlName="partnerName" value="Amilia Arcand">
+                                <label for="floatingInput">Partner Name</label>
+                                <div *ngIf="profileForm.controls['partnerName'].invalid && profileForm.controls['partnerName'].touched"
+                                    class="error-message">
+                                    <div *ngIf="profileForm.controls['partnerName'].errors?.['required']">Please enter
+                                        your partner name.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating ct_input mb-3">
+                        <select class="form-select form-control" formControlName="gender" id="floatingSelect"
+                            aria-label="Floating label select example">
+                            <option selected>Select Gender</option>
+                            <option value="1" selected>Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
+                        </select>
+                        <label for="floatingSelect">Gender</label>
+                        <div *ngIf="profileForm.controls['gender'].invalid && profileForm.controls['gender'].touched"
+                            class="error-message">
+                            <div *ngIf="profileForm.controls['gender'].errors?.['required']">Please select
+                                your gender.</div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3 ct_input">
+                        <input type="text" class="form-control" formControlName="phone" id="floatingInput"
+                            value="9875463210">
+                        <label for="floatingInput">Phone</label>
+                        <div *ngIf="profileForm.controls['phone'].invalid && profileForm.controls['phone'].touched"
+                            class="error-message">
+                            <div *ngIf="profileForm.controls['phone'].errors?.['required']">Please enter
+                                your contact number.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3 ct_input">
+                        <input type="email" class="form-control" formControlName="email" id="floatingInput"
+                            value="johndoe@gmail.com">
+                        <label for="floatingInput">Email address</label>
+                        <div *ngIf="profileForm.controls['email'].invalid && profileForm.controls['email'].touched"
+                            class="error-message">
+                            <div *ngIf="profileForm.controls['email'].errors?.['required']">Email is required.</div>
+                            <div
+                                *ngIf="profileForm.controls['email'].errors?.['email'] && !profileForm.controls['email'].errors?.['required']">
+                                Invalid email format.</div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5" (click)="onSubmit()">
+                        <a type="submit" class="ct_custom_btn" style="text-decoration: none;">Edit Profile</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
