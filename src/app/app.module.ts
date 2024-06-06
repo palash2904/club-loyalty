@@ -9,13 +9,16 @@ import { AngularFireModule } from '@angular/fire/compat';
 //import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeadersInterceptor } from './services/interceptor/headers.interceptor';
+//import { HeadersInterceptor } from './services/interceptor/headers.interceptor';
 import { ForgotPasswordComponent } from './core/forgot-password/forgot-password.component';
 import { NgTiltModule } from '@geometricpanda/angular-tilt';
 import { NgxLoadingModule } from 'ngx-loading';
 import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { UserService } from './services/user.service';
 //import { AngularFireMessagingModule } from '@angular/fire/messaging';
-
+import { initializeApp } from 'firebase/app';
+initializeApp(environment.firebaseConfig)
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,13 +26,14 @@ import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
     ForgotPasswordComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'my-app'),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireMessagingModule,
     AngularFireModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot({
+      timeOut: 5000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
       progressBar: true
@@ -38,8 +42,9 @@ import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
     ReactiveFormsModule,
     NgTiltModule,
     NgxLoadingModule.forRoot({}),
+    BrowserAnimationsModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true }],
+  //providers: [{ provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true }, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as firebase from 'firebase/compat';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import * as functions from 'firebase-functions';
 // import * as admin from 'firebase-admin';
 //admin.initializeApp();
@@ -30,51 +31,54 @@ export class ChatComponent {
   userDet: any = '';
   userId: any = '';
 
-  constructor(private userSer: UserService, private firestore: AngularFirestore, private router: Router, private afMessaging: AngularFireMessaging, private toastr: ToastrService) {
+  userData: any[] = [];
+  selectedUser: any;
+
+  avatar_url: any;
+  avatar_name: any;
+
+  to: any;
+  body: any;
+  title: any;
+
+
+  constructor(private userSer: UserService, private firestore: AngularFirestore, private router: Router, private afMessaging: AngularFireMessaging, private toastr: ToastrService, private http: HttpClient) {
     // Get a reference to the chatrooms collection
     const chatroomsCollection: AngularFirestoreCollection<any> = this.firestore.collection('chatRooms');
+    //const chatroomsCollection: AngularFirestoreCollection<any> = this.firestore.collection('chatRooms', ref => ref.orderBy('modifiedAtTimestampInMillis', 'desc'));
 
+    
     // Query the collection and assign the result to the Observable
     this.chatrooms$ = chatroomsCollection.valueChanges();
 
     // Subscribe to the Observable and print the result in the console
     this.chatrooms$.subscribe(chatrooms => {
-      //console.log('Chatrooms id:', chatrooms);
-      this.roomId = chatrooms
-      console.log('roomId', this.roomId)
+
+      this.roomId = chatrooms;
+      console.log('this.roomId', this.roomId);
+
+      const createdByUserIds: any[] = chatrooms.map(chatroom => Number(chatroom.createdByUserId));
+
+      // Log the resulting array of createdByUserIds
+      //console.log('createdByUserIds', createdByUserIds);
+
+
+      this.sendIdsToApi(createdByUserIds);
     });
 
     //this.userSer.requestPermission();
 
-    this.afMessaging.messages.subscribe((message) => {
-      console.log('New message received:', message);
-      // Show a notification to the user
-      //this.showNotification(message);
-    });
-
-
-    this.afMessaging.requestToken
-      .subscribe(
-        (token) => {
-          console.log('Permission granted! Save to the server!', token);
-          // Save the token to your server or use it as needed
-        },
-        (error) => {
-          console.error('Permission denied', error);
-        }
-      );
-
   }
 
-
-
   ngOnInit(): void {
+
     this.initForm();
 
     this.userDet = localStorage.getItem('userDetail');
     const parsedData = JSON.parse(this.userDet);
     this.userId = parsedData['id']
     //console.log('this.userId', this.userId)
+
   }
 
   initForm() {
@@ -85,17 +89,83 @@ export class ChatComponent {
   }
 
 
+  sendIdsToApi(ids: number[]) {
+    const data = { ids };
+
+    this.userSer.postAPIJson('/admin/getUsersWithIds', data).subscribe({
+      next: (resp) => {
+        this.userData = resp.users;
+        //console.log('API response:', this.userData);
+        // if (this.userData.length > 0) {
+        //   this.selectUser(this.userData[0]);
+        // }
+      },
+      error: (err) => {
+        console.error('API error:', err);
+      }
+    });
+  }
+
+  private fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+  private serverKey = 'AAAAFqiUxNk:APA91bHbBMgoR_WN4vitooJEVMF1fCg-NArEddJwUtCWHalJqE_JtiNjL5Mb1n_GoI15jMUaKnU3FvF06Djk-ijqSvaw_i3IiXsDtiIX50KbIPuTQQnu1XooL2lHxg_fAE3f2m0rBq-K';
+
+  sendNotification() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `key=${this.serverKey}`
+    });
+
+    const payload = {
+      to: this.to,
+      notification: {
+        body: this.body,
+        title: this.title
+      }
+    };
+
+    this.http.post(this.fcmUrl, payload, { headers: headers }).subscribe({
+      next: (resp) => {
+        console.log('notifyresp', resp)
+      },
+      error: (err) => {
+        console.log('err', err)
+      }
+    })
+  }
+
+
+  selectUser(user: any) {
+    this.selectedUser = user;
+    //console.log('Selected user:', this.selectedUser);
+    this.to = user.fcm_token;
+    this.title = user.full_name
+    this.getChatId(user.id, user.avatar_url, user.full_name);
+  }
+
+
+  getChatId(id: any, img: any, name: any) {
+    this.chatId = JSON.stringify(id);
+    this.avatar_url = img;
+    this.avatar_name = name;
+    this.getChatMsg();
+  }
+
+
   getChatMsg() {
     const chatroomsMessages: AngularFirestoreCollection<any> = this.firestore.collection('chatRooms').doc(this.chatId).collection("messages", ref =>
       ref.orderBy('messageTimeStampInMillis', 'desc'));
+
     this.chatMessages$ = chatroomsMessages.valueChanges().pipe(
       map(chatmag => chatmag.reverse())
     );
 
     this.chatMessages$.subscribe(chatmag => {
-      console.log('Chatrooms msg:', chatmag);
+      //console.log('Chatrooms msg:', chatmag);
       this.roomMsg = chatmag;
-      console.log('roomMsg', this.roomMsg)
+      //console.log('roomMsg', this.roomMsg)
+
+      //this.incrementNewMessageCount(this.selectedUser.id);
+
     });
   }
 
@@ -107,11 +177,17 @@ export class ChatComponent {
   }
 
 
-  getChatId(id: any) {
-    this.chatId = id;
-    this.getChatMsg();
-  }
+  // newMessageCounts: { [userId: string]: number } = {};
 
+  // updateNewMessageCount(userId: string) {
+  //   // Reset the new message count for the selected user
+  //   this.newMessageCounts[userId] = 0;
+  // }
+
+  // incrementNewMessageCount(userId: string) {
+  //   // Increment the new message count for the user
+  //   this.newMessageCounts[userId] = (this.newMessageCounts[userId] || 0) + 1;
+  // }
 
 
   // handleCommittedFileInput(event: Event) {
@@ -125,6 +201,7 @@ export class ChatComponent {
   sendMessage() {
     // Get the message content from the form
     const messageContent = this.newForm.value.message;
+    this.body = messageContent;
 
     if (!messageContent.trim()) {
       // If the message content is empty, do not proceed with sending the message
@@ -138,7 +215,7 @@ export class ChatComponent {
     const batch = this.firestore.firestore.batch();
     // const documentReference = this.firestore.collection("chatRooms").doc(this.chatId).collection("messages").doc();
     const documentReference = this.firestore.collection("chatRooms").doc(this.chatId).collection("messages");
-    console.log('documentReference', documentReference)
+    //console.log('documentReference', documentReference)
 
     const messageModel = {
       messageId: documentReference.ref.id,
@@ -147,7 +224,7 @@ export class ChatComponent {
       messageTimeStampInMillis: new Date().getTime()
       //event: event ? event.toJson() : null
     };
-    console.log('messageModel', messageModel)
+    //console.log('messageModel', messageModel)
     //return
 
     // Add the new message document to the messages subcollection
@@ -156,11 +233,13 @@ export class ChatComponent {
         console.log('Message sent successfully!');
         // Clear the message input field after sending
         this.newForm.patchValue({ message: '' });
+        this.sendNotification();
       })
       .catch(error => {
         console.error('Error sending message:', error);
       });
   }
+
 
 
   @ViewChildren('message') messageElements!: QueryList<ElementRef>;
@@ -184,37 +263,7 @@ export class ChatComponent {
     }
   }
 
-  // async sendMessage(senderId: string, chatRoomModel: ChatRoomModel, messageContent: string, event?: Event) {
-  //   if (messageContent.trim().isEmpty) {
-  //     return;
-  //   }
 
-  //   const batch = this.firestore.firestore.batch();
-  //   const documentReference = this.firestore.collection("chatRooms").doc(chatRoomModel.chatRoomId).collection("messages").doc();
-
-  //   const messageModel: MessageModel = {
-  //     messageId: documentReference.id,
-  //     messageContent: messageContent,
-  //     senderId: senderId,
-  //     messageTimeStampInMillis: firebase.firestore.Timestamp.now().toMillis(),
-  //     event: event ? event.toJson() : null
-  //   };
-
-  //   batch.set(
-  //     documentReference.ref,
-  //     messageModel
-  //   );
-
-  //   batch.update(this.firestore.collection("chatRooms").doc(chatRoomModel.chatRoomId).ref, {
-  //     recentMessage: messageModel
-  //   });
-
-  //   await batch.commit();
-  // }
-
-  // navigateToChatbox(roomId: string) {
-  //   this.router.navigate(['/main/chatbox', roomId]);
-  // }
 
 
 }

@@ -20,62 +20,79 @@ export class DashboardComponent {
   scratchCards: any;
   isChecked: boolean = false;
 
+
   handleCheckboxChange(row: any) {
-    //this.isChecked = !this.isChecked;
+
     if (row.isActive == false) {
-      this.service.postAPI(`/admin/activeUser/${row.id}`, null).subscribe({
-        next: resp => {
-          console.log(resp)
-          this.toastr.success(resp.message)
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to active this user!",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+        cancelButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.service.postAPI(`/admin/activeUser/${row.id}`, null).subscribe({
+            next: resp => {
+              console.log(resp)
+              this.toastr.success(resp.message)
+              this.getUsersData();
+            }
+          })
+        } else {
           this.getUsersData();
         }
-      })
+      });
     } else {
-      this.service.postAPI(`/admin/deactivateUser/${row.id}`, null).subscribe({
-        next: resp => {
-          console.log(resp)
-          this.toastr.success(resp.message)
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to deactive this user!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+        cancelButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.service.postAPI(`/admin/deactivateUser/${row.id}`, null).subscribe({
+            next: resp => {
+              console.log(resp)
+              this.toastr.success(resp.message)
+              this.getUsersData();
+            }
+          })
+        } else {
           this.getUsersData();
         }
-      })
+      });
+
     }
   }
+
   // handleCheckboxChange(row: any) {
-  //   // Show SweetAlert confirmation dialog
-  //   Swal.fire({
-  //     title: 'Are you sure?',
-  //     text: 'You are about to change the user status.',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Yes, proceed!'
-  //   }).then((result) => {
-  //     console.log(result)
-  //     return
-  //     if (result.isConfirmed) {
-  //       // User confirmed, proceed with the action
-  //       if (row.isActive == false) {
-  //         this.service.postAPI(`/admin/activeUser/${row.id}`, null).subscribe({
-  //           next: resp => {
-  //             console.log(resp)
-  //             this.toastr.success(resp.message)
-  //             this.getUsersData();
-  //           }
-  //         })
-  //       } else {
-  //         this.service.postAPI(`/admin/deactivateUser/${row.id}`, null).subscribe({
-  //           next: resp => {
-  //             console.log(resp)
-  //             this.toastr.success(resp.message)
-  //             this.getUsersData();
-  //           }
-  //         })
+  //   //this.isChecked = !this.isChecked;
+  //   if (row.isActive == false) {
+  //     this.service.postAPI(`/admin/activeUser/${row.id}`, null).subscribe({
+  //       next: resp => {
+  //         console.log(resp)
+  //         this.toastr.success(resp.message)
+  //         this.getUsersData();
   //       }
-  //     }
-  //   });
+  //     })
+  //   } else {
+  //     this.service.postAPI(`/admin/deactivateUser/${row.id}`, null).subscribe({
+  //       next: resp => {
+  //         console.log(resp)
+  //         this.toastr.success(resp.message)
+  //         this.getUsersData();
+  //       }
+  //     })
+  //   }
   // }
-  
 
   constructor(private service: UserService, private toastr: ToastrService) { }
 

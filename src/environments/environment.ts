@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   apiUrl  : '',
-  //baseUrl :'http://192.168.1.23:4001',
-  baseUrl :'http://93.174.125.40:4000',
+  baseUrl :'http://192.168.1.25:4001',
+  //baseUrl :'http://93.174.125.40:4000',
   firebaseConfig: {
     apiKey: "AIzaSyDFDKitQ58rrmQqUSCVJw5CoEEbxeDJRpM",
     authDomain: "clubloyalty-abd8b.firebaseapp.com",
@@ -14,7 +14,8 @@ export const environment = {
     storageBucket: "clubloyalty-abd8b.appspot.com",
     messagingSenderId: "97317602521",
     appId: "1:97317602521:web:b8aa49437719e78839aac8",
-    measurementId: "G-WGQDDP9DJ1"
+    measurementId: "G-WGQDDP9DJ1",
+    vapidKey: "BGGSqhPjaA2iK0328yQ6Eihoiye_ZhEqtlVSRLYPD4LQX9RO5gRFD2oF-FMS1QNNbBFmL3YXTerA76RZlvU8hUU"
   }
 };
 /*

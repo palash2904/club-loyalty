@@ -22,16 +22,18 @@
                                     <div class="chat-lists">
                                         <div class="chat-list">
                                             <!-- <a *ngFor="let data of roomId" [routerLink]="['/chat1/chatbox', data.chatRoomId]" class="d-flex align-items-center"> -->
-                                            <a *ngFor="let data of roomId" (click)="getChatId(data.chatRoomId)"
+                                            <a *ngFor="let data of userData" (click)="selectUser(data)"
                                                 class="d-flex align-items-center">
                                                 <div class="flex-shrink-0">
-                                                    <img class="img-fluid"
-                                                        src="https://mehedihtml.com/chatbox/assets/img/user.png"
-                                                        alt="user img">
+                                                    <img class="img-fluid ct_chat_profile_12"
+                                                    [src]="data.avatar_url" alt="img" >
+                                                  
                                                     <!-- <span class="active"></span> -->
                                                 </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h3 class="mb-0">{{data.chatRoomId}}</h3>
+                                                <div class="flex-grow-1 ms-3 d-flex align-items-center gap-2 justify-content-between" style="cursor: pointer" >
+                                                    <h3 class="mb-0">{{data.full_name}}</h3>
+                                                    <!-- <span *ngIf="newMessageCounts[data.id] > 0"
+                                                     class="ct_msg_notify_1 me-1">{{ newMessageCounts[data.id] }}</span> -->
                                                 </div>
                                             </a>
                                         </div>
@@ -54,16 +56,12 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <div class="d-flex align-items-center">
-                                                <span class="chat-icon"><img class="img-fluid"
-                                                        src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
-                                                        alt="image title"></span>
                                                 <div class="flex-shrink-0">
-                                                    <img class="img-fluid"
-                                                        src="https://mehedihtml.com/chatbox/assets/img/user.png"
-                                                        alt="user img">
+                                                    <img class="img-fluid ct_chat_profile_12"
+                                                    [src]="this.avatar_url" alt="img" >
                                                 </div>
                                                 <div class="flex-grow-1 ms-3">
-                                                    <h3 class="mb-0">Mehedi Hasan</h3>
+                                                    <h3 class="mb-0">{{avatar_name}}</h3>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
+//import { AngularFireMessaging } from '@angular/fire/messaging';
 import * as firebase from 'firebase/compat';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, take } from 'rxjs';
+import { getMessaging, getToken } from 'firebase/messaging'
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,49 +15,87 @@ export class UserService {
 
   apiUrl = environment.baseUrl
 
-  //messaging = firebase.messaging();
+  constructor(private http: HttpClient, private toastr: ToastrService, private afMessaging: AngularFireMessaging) { }
 
-  constructor(private http: HttpClient, private afMessaging: AngularFireMessaging, private toastr: ToastrService) {
-    // this.afMessaging.messaging.subscribe(
-    //   (_messaging) => {
-    //   _messaging.onMessage = _messaging.onMessage.bind(_messaging);
-    //   _messaging.onTokenRefresh = _messaging.onTokenRefresh.bind(_messaging);
-    //   }
-    //   )
-   }
 
-  getApi(url:any):Observable<any>{
-    return this.http.get(this.apiUrl + url )
+  getApi(url: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.get(this.apiUrl + url, { headers: headers })
   };
 
-  gdeleteApi(url:any):Observable<any>{
-    return this.http.delete(this.apiUrl + url )
+  gdeleteApi(url: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.delete(this.apiUrl + url, { headers: headers })
   };
-  
-  postAPI(url:any, data:any):Observable<any>{
-    return this.http.post(this.apiUrl + url ,data )
+
+  postAPI(url: any, data: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.post(this.apiUrl + url, data, { headers: headers })
   };
+
+  postAPIJson(url: any, data: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.post(this.apiUrl + url, data, { headers: headers });
+  }
+
 
   currentMessage = new BehaviorSubject(null);
 
-
   requestPermission() {
-    this.afMessaging.requestToken.subscribe(
-    (token) => {
-    console.log(token);
-    },
-    (err) => {
-    console.error('Unable to get permission to notify.', err);
-    }
-    );
-    }
-    receiveMessage() {
-    this.afMessaging.messages.subscribe(
-    (payload: any) => {
-    console.log("new message received. ", payload);
-    this.currentMessage.next(payload);
-    })
-    }
-  
-  
+    const messaging = getMessaging();
+    getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then(
+      (currentToken) => {
+        if (currentToken) {
+          console.log('tokehuyiyiiuiuin');
+          console.log(currentToken);
+          localStorage.setItem('notifyToken', currentToken)
+        } else {
+          console.log('tokehuyiyiiuiuin');
+        }
+      }
+    )
+  }
+
+  // requestPermission() {
+  //   this.afMessaging.requestToken.subscribe(
+  //       (token) => {
+  //         console.log('FCM Token:', token);
+  //         // Store or send the token to your server for later use
+  //       },
+  //       (error) => {
+  //         console.error('Error obtaining FCM token', error);
+  //         this.toastr.error('Unable to get notification permission. Please enable it in your browser settings.');
+  //       }
+  //     );
+  // }
+
+  listen() {
+    this.afMessaging.messages
+      .subscribe(
+        (message) => {
+          console.log('New message:', message);
+          this.toastr.info('New notification received');
+        },
+        (error) => {
+          console.error('Error receiving message', error);
+        }
+      );
+  }
+
 }

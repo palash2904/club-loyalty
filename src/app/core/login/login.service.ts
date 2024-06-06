@@ -49,6 +49,7 @@ export class LoginService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userDetail');
+    localStorage.removeItem('notifyToken');
     this.route.navigateByUrl('/login');
   }
 

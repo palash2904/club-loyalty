@@ -8,3 +8,24 @@
     height: calc(100vh - 200px);
   
 }
+
+.ct_chat_profile_12{
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+    object-fit: cover;
+}
+span.ct_msg_notify_1 {
+    width: 20px;
+    border-radius: 100px;
+    height: 20px;
+    background-color: #fe2f7a;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
