@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +9,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
-  styleUrls: ['./offers.component.css']
+  styleUrls: ['./offers.component.css'],
+  providers: [DatePipe] 
 })
 export class OffersComponent {
 
@@ -21,7 +23,7 @@ export class OffersComponent {
   updateDet: any;
   updateId: any;
 
-  constructor(private route: Router, private service: UserService, private toastr: ToastrService) { }
+  constructor(private route: Router, private service: UserService, private toastr: ToastrService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -35,8 +37,8 @@ export class OffersComponent {
       price: new FormControl('', Validators.required),
       offerPrice: new FormControl('', Validators.required),
       endDate: new FormControl('', Validators.required),
-      points: new FormControl('', Validators.required),
-      image: new FormControl(null),
+      //points: new FormControl('', Validators.required),
+      image: new FormControl(null)
     })
   }
 
@@ -46,8 +48,8 @@ export class OffersComponent {
       price: new FormControl(this.updateDet?.price, Validators.required),
       offerPrice: new FormControl(this.updateDet?.offerPrice, Validators.required),
       endDate: new FormControl(this.updateDet?.endDate, Validators.required),
-      points: new FormControl(this.updateDet?.points, Validators.required),
-      image: new FormControl(null),
+      //points: new FormControl(this.updateDet?.points, Validators.required),
+      image: new FormControl(null)
     })
   }
 
@@ -75,23 +77,26 @@ export class OffersComponent {
     if (this.newForm.valid) {
       const formURlData = new FormData();
       formURlData.set('title', this.newForm.value.title)
-      formURlData.set('price', this.newForm.value.price)
-      formURlData.set('offerPrice', this.newForm.value.offerPrice)
+      formURlData.set('price', `€${this.newForm.value.price}`);
+      formURlData.set('offerPrice', `€${this.newForm.value.offerPrice}`);
       formURlData.set('endDate', this.newForm.value.endDate)
-      formURlData.set('points', this.newForm.value.points)
+      //formURlData.set('points', this.newForm.value.points)
       formURlData.append('image', this.UploadedFile);
-      this.service.postAPI('/admin/addOffer', formURlData).subscribe({
+      console.log('formURlData', formURlData)
+      //return
+      this.service.postAPIFormData('/admin/addOffer', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
             this.newForm.reset();
+            this.toastr.success(resp.message);
+            this.getOfferData();
+          } else {
+            this.toastr.warning(resp.message);
           }
-
-          this.toastr.success(resp.message);
-          this.getOfferData()
         },
         error: error => {
-          this.toastr.warning('Something went wrong.');
+          this.toastr.error('Something went wrong.');
           console.log(error.message)
         }
       })
@@ -101,7 +106,7 @@ export class OffersComponent {
   patchUpdate(details: any) {
     this.updateDet = details;
     this.updateId = details.id;
-    this.initUpdateForm();
+    this.initUpdateForm(); 
   }
 
   onUpdate() {
@@ -111,14 +116,14 @@ export class OffersComponent {
       formURlData.set('title', this.updateForm.value.title)
       formURlData.set('price', this.updateForm.value.price)
       formURlData.set('endDate', this.updateForm.value.endDate)
-      formURlData.set('points', this.updateForm.value.points)
+      //formURlData.set('points', this.updateForm.value.points)
       if (this.UploadedFile) {
         formURlData.append('image', this.UploadedFile);
       }
       //formURlData.append('image', this.UploadedFile);
       formURlData.set('offerPrice', this.updateForm.value.offerPrice)
       formURlData.set('offerId', this.updateId)
-      this.service.postAPI('/admin/editOffer', formURlData).subscribe({
+      this.service.postAPIFormData('/admin/editOffer', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal2.nativeElement.click();
@@ -126,7 +131,7 @@ export class OffersComponent {
             this.toastr.success('Update successful!');
             this.getOfferData()
           } else {
-            this.toastr.success(resp.success.message);
+            this.toastr.success(resp.message);
           }
           //this.newForm.reset();  
         },

@@ -34,8 +34,15 @@
                 </div>
             </div>
         </div>
-
     </section>
+
+
+<!-- example.component.html -->
+<!-- <button routerLink="/user/main/qr-scanner">Open QR Scanner</button> -->
+
+
+
+
     <section class="mb-5">
         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
             <h2 class="ct_h2">All Users</h2>
@@ -75,6 +82,11 @@
                                     <span class="check"></span>
                                 </label>
 
+                                <button class="ct_action_btn ct_edit_btn" (click)="patchUpdate(row)"
+                                    data-bs-toggle="modal" data-bs-target="#ct_edit_event">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
                                 <button class="ct_action_btn ct_dlt_btn" (click)="deleteField(row.id)">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -84,9 +96,9 @@
                 </tbody>
 
                 <div *ngIf="(data?.length == 0)" class="no-item-found">
-                    No item found
+                    No results found
                 </div>
-                
+
             </table>
         </div>
     </section>
@@ -97,6 +109,78 @@
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <img [src]="userImg" alt="img">
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Event -->
+<div class="modal fade" id="ct_edit_event" tabindex="-1" aria-labelledby="ct_edit_eventLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 pb-5">
+                <div class="ct_event_modal">
+                    <h2 class="text-center mb-5 ct_h2">Edit Event</h2>
+                    <form [formGroup]="updateForm">
+                        <div class="ct_formField mb-3">
+                            <label for="" class="mb-2 ct_fw_600">Event Image</label>
+                            <!-- <label for="ct_event_img" class="w-100">
+                                <div class="ct_edt_img">
+                                    <img [src]="updateDet?.image_url" alt="">
+                                </div>
+                                <input type="file" id="ct_event_img" formControlName="image" class="d-none"
+                                    (change)="handleCommittedFileInput($event)" />
+                            </label> -->
+                            <label for="imgInp" class="w-100">
+                                <input accept="image/*" type="file" formControlName="image" id="imgInp" class="d-none"
+                                    (change)="handleFileInput($event)" />
+                                <div class="ct_edt_img">
+                                    <img id="blah" src="#" alt="Uploaded Image" [src]="updateDet?.avatar_url">
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="ct_formField mb-3 ">
+                            <label for="" class="mb-2 ct_fw_600">full_name</label>
+                            <input type="text" required formControlName="full_name" value="DJ Night with bablo" />
+                            <!-- <div *ngIf="updateForm.controls['full_name'].invalid && updateForm.controls['full_name'].touched"
+                                class="error-message">
+                                <div *ngIf="updateForm.controls['full_name'].errors?.['required']">Title is
+                                    required.
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="ct_formField mb-3 ">
+                            <label for="" class="mb-2 ct_fw_600">nick_name</label>
+                            <input type="text" required formControlName="nick_name" value="DJ Night with bablo" />
+                            <!-- <div *ngIf="updateForm.controls['nick_name'].invalid && updateForm.controls['nick_name'].touched"
+                                class="error-message">
+                                <div *ngIf="updateForm.controls['nick_name'].errors?.['required']">Title is
+                                    required.
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="ct_formField mb-3 ">
+                            <label for="" class="mb-2 ct_fw_600">partner</label>
+                            <input type="text" required formControlName="partner" value="DJ Night with bablo" />
+                            <!-- <div *ngIf="updateForm.controls['partner'].invalid && updateForm.controls['partner'].touched"
+                                class="error-message">
+                                <div *ngIf="updateForm.controls['partner'].errors?.['required']">Title is
+                                    required.
+                                </div>
+                            </div> -->
+                        </div>
+                        <button type="button" (click)="onUpdate()"
+                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Save
+                            changes</button>
+                        <button hidden type="button" class="btn btn-secondary" #closeModal2
+                            data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

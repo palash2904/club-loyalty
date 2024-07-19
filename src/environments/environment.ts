@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   apiUrl  : '',
-  baseUrl :'http://192.168.1.25:4001',
-  //baseUrl :'http://93.174.125.40:4000',
+  baseUrl :'https://www.c4c.gr:4000',
+  //baseUrl :'http://192.168.29.221:4001',
   firebaseConfig: {
     apiKey: "AIzaSyDFDKitQ58rrmQqUSCVJw5CoEEbxeDJRpM",
     authDomain: "clubloyalty-abd8b.firebaseapp.com",

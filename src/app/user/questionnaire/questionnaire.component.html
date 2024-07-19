@@ -21,19 +21,17 @@
              <tbody>
                  <tr *ngFor="let row of data; let i = index">
                      <td>{{i+1}}</td>
-                    <td>John Doe</td>
-                    <td>johndoe@gmail.com</td>
-                     <td>
-                         How would you rate the friendliness and efficiency of our staff?
-                     </td>
-                     <td>3/4</td>
+                     <td>{{ row.user.full_name }}</td>
+                     <td>{{ row.user.email }}</td>
+                     <td>{{ row.question.title }}</td>
+                     <td>{{ row.option }}</td>
                    
                      <td>
                          <div class="d-flex align-items-center gap-2 justify-content-end">
                              <!-- <button class="ct_action_btn ct_edit_btn" data-bs-toggle="modal" data-bs-target="#ct_edit_offer">
                                  <i class="fa-solid fa-pen"></i>
                              </button> -->
-                             <button class="ct_action_btn ct_dlt_btn">
+                             <button class="ct_action_btn ct_dlt_btn" (click)="deleteField(row.id)">
                                  <i class="fa-solid fa-trash"></i>
                              </button>
                          </div>

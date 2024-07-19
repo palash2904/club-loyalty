@@ -7,4 +7,16 @@ import { Component } from '@angular/core';
 })
 export class MainComponent {
 
+  isMenuActive = false;
+
+  openMenu(isMenuActive: boolean) {
+    this.isMenuActive = isMenuActive; // Update menu active state
+  }
+
+  closeMenu(isMenuActive: boolean) {
+    this.isMenuActive = isMenuActive; // Update menu active state
+  }
+
+
+
 }

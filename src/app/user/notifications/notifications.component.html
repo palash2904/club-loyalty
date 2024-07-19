@@ -1,0 +1,107 @@
+<div class="ct_middle_cnt">
+    <section class="mb-5">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+            <h2 class="ct_h2">Notification</h2>
+            <button class="ct_custom_btn py-2 px-4 w-auto" data-bs-toggle="modal" data-bs-target="#ct_add_event">
+                <i class="fa-solid fa-plus"></i> Send Notification
+            </button>
+        </div>
+        <!-- <div class="table-responsive">
+            <table class="table ct_custom_table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>
+                            <div class="ct_event_img">
+                                <img [src]="row.image_url" alt="img">
+                            </div>
+                        </td>
+                        <td>{{row.title}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.time}}</td>
+                    </tr>
+                </tbody>
+                <div *ngIf="(data?.length == 0)" class="no-item-found">
+                    No results found
+                </div>
+            </table>
+        </div> -->
+    </section>
+</div>
+
+
+<!-- Add Event -->
+<div class="modal fade" id="ct_add_event" tabindex="-1" aria-labelledby="ct_add_eventLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 pb-5">
+                <div class="ct_event_modal">
+                    <h2 class="text-center mb-5 ct_h2">Notification</h2>
+                    <form [formGroup]="newForm">
+
+                        <div class="form-floating ct_input mb-3">
+                            <select class="form-select form-control" formControlName="title" id="floatingSelect"
+                                aria-label="Floating label select example">
+                                <option disabled value=0>Select Title</option>
+                                <option value="Event">Event</option>
+                                <option value="Offer">Offer</option>
+                                <option value="General">General</option>
+                            </select>
+                            <label for="floatingSelect">Title</label>
+                            <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['title'].errors?.['required']">Please select
+                                    title.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating ct_input mb-3">
+                            <select class="form-select form-control" formControlName="tier" id="floatingSelect"
+                                aria-label="Floating label select example">
+                                <option disabled value=0>Select Tier</option>
+                                <option value="5">Bronze</option>
+                                <option value="10">Silver</option>
+                                <option value="15">Gold</option>
+                            </select>
+                            <label for="floatingSelect">Tier</label>
+                            <div *ngIf="newForm.controls['tier'].invalid && newForm.controls['tier'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['tier'].errors?.['required']">Please select
+                                    tier.</div>
+                            </div>
+                        </div>
+
+                        <div class="ct_formField mb-3">
+                            <label for="" class="mb-2 ct_fw_600">Body</label>
+                            <input type="text" required formControlName="body" />
+                            <div *ngIf="newForm.controls['body'].invalid && newForm.controls['body'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['body'].errors?.['required']">Body is
+                                    required.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <button type="button" (click)="addEvent()"
+                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Send Notification</button>
+                        <button hidden type="button" class="btn btn-secondary" #closeModal
+                            data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

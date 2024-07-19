@@ -1,16 +1,15 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-
 @Component({
-  selector: 'app-gift-card',
-  templateUrl: './gift-card.component.html',
-  styleUrls: ['./gift-card.component.css']
+  selector: 'app-card-game',
+  templateUrl: './card-game.component.html',
+  styleUrls: ['./card-game.component.css']
 })
-export class GiftCardComponent {
+export class CardGameComponent {
 
   newForm!: FormGroup;
   updateForm!: FormGroup;
@@ -25,29 +24,41 @@ export class GiftCardComponent {
   ngOnInit(): void {
     this.initForm();
     this.initUpdateForm();
-    this.getScratchData()
+    this.getScratchData();
   }
 
   initForm() {
     this.newForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      points: new FormControl('', Validators.required),
-      endDate: new FormControl('', Validators.required),
+      //successRate: new FormControl('', Validators.required),
+      successRate: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'), // Only allow whole numbers
+        this.rangeValidator(1, 100) // Custom validator to check the range
+      ])
     })
+  }
+
+  rangeValidator(min: number, max: number) {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value && (isNaN(control.value) || control.value < min || control.value > max)) {
+        return { 'range': true };
+      }
+      return null;
+    };
   }
 
   initUpdateForm() {
     this.updateForm = new FormGroup({
       title: new FormControl(this.updateDet?.title, Validators.required),
-      points: new FormControl(this.updateDet?.points, Validators.required),
-      endDate: new FormControl(this.updateDet?.endDate, Validators.required),
+      successRate: new FormControl((this.updateDet?.successRate * 100), Validators.required)
     })
   }
 
   getScratchData() {
-    this.service.getApi('/admin/scratchCards').subscribe({
+    this.service.getApi('/admin/giftCard').subscribe({
       next: resp => {
-        this.data = resp.scratchCards.reverse();
+        this.data = resp.giftCards.reverse();
       },
       error: error => {
         console.log(error.message)
@@ -61,22 +72,22 @@ export class GiftCardComponent {
     if (this.newForm.valid) {
       const formURlData = new URLSearchParams();
       formURlData.set('title', this.newForm.value.title)
-      formURlData.set('endDate', this.newForm.value.endDate)
-      formURlData.set('points', this.newForm.value.points)
-      this.service.postAPI('/admin/addScratchCard',formURlData).subscribe({
+      const sus = this.newForm.value.successRate / 100;
+      formURlData.set('successRate', JSON.stringify(sus))
+      this.service.postAPI('/admin/addGiftCard', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
             this.newForm.reset();
             this.toastr.success(resp.message);
             this.getScratchData();
-          } else{
+          } else {
+            this.getScratchData();
             this.toastr.warning(resp.message);
           }
-          //this.getSupplyData()
         },
         error: error => {
-          this.toastr.warning('Something went wrong.');
+          this.toastr.error('Something went wrong.');
           console.log(error.message)
         }
       })
@@ -94,10 +105,10 @@ export class GiftCardComponent {
     if (this.updateForm.valid) {
       const formURlData = new URLSearchParams();
       formURlData.set('title', this.updateForm.value.title)
-      formURlData.set('endDate', this.updateForm.value.endDate)
-      formURlData.set('points', this.updateForm.value.points)
+      const sus = this.updateForm.value.successRate / 100
+      formURlData.set('successRate', JSON.stringify(sus))
       formURlData.set('id', this.updateId)
-      this.service.postAPI('/admin/editScratchCard', formURlData).subscribe({
+      this.service.postAPI('/admin/editGiftCard', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal1.nativeElement.click();
@@ -110,7 +121,7 @@ export class GiftCardComponent {
           //this.newForm.reset();  
         },
         error: error => {
-          this.toastr.warning('Something went wrong.');
+          this.toastr.error('Something went wrong.');
           console.log(error.message)
         }
       })
@@ -139,7 +150,7 @@ export class GiftCardComponent {
         if (result.isConfirmed) {
           const formURlData = new URLSearchParams();
           formURlData.set('id', id);
-          this.service.gdeleteApi(`/admin/scratchCard/${id}`).subscribe({
+          this.service.gdeleteApi(`/admin/giftCard/${id}`).subscribe({
             next: resp => {
               console.log(resp)
               this.toastr.success(resp.message)
@@ -152,6 +163,5 @@ export class GiftCardComponent {
         }
       });
   }
-
 
 }

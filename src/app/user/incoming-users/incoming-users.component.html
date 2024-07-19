@@ -1,45 +1,45 @@
 <div class="ct_middle_cnt">
     <section class="mb-5">
-     <div class="mb-4">
-         <h2 class="ct_h2">All Incoming Users</h2>
-        
-     </div>
-     <div class="table-responsive">
-        <table class="table ct_custom_table">
-             <thead>
-                 <tr>
-                     <th>No.</th>
-                     <th>
-                         Image
-                     </th>
-                     <th>Name</th>
-                     <th>Email</th>
-                     <th>Number</th>
-                     <th>Gender</th>
-                     <th class="text-end">Action</th>
-                 </tr>
-             </thead>
-             <tbody>
-                 <tr>
-                     <td>1</td>
-                     <td>
-                         <div class="ct_event_img">
-                             <img src="assets/img/profile.png" alt="assets/img/profile.png">
-                         </div>
-                     </td>
-                     <td>
-                        John Doe
-                     </td>
-                     <td>
-                        johndoe@gmail.com
-                     </td>
-                     <td>
-                         +1 1234567890
-                     </td>
-                     <td>
-                         Male
-                     </td>
-                     <td>
+        <div class="mb-4">
+            <h2 class="ct_h2">All Incoming Users</h2>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table ct_custom_table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>
+                            Image
+                        </th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Number</th>
+                        <th>Gender</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data; let i = index">
+                        <td>1{{i+1}}</td>
+                        <td>
+                            <div class="ct_event_img">
+                                <img [src]="row.avatar_url" alt="img">
+                            </div>
+                        </td>
+                        <td>
+                           {{row.full_name}}
+                        </td>
+                        <td>
+                            {{row.email}}
+                        </td>
+                        <td>
+                            {{row.phone_no}}
+                        </td>
+                        <td>
+                            {{row.gender}}
+                        </td>
+                        <!-- <td>
                          <div class="d-flex align-items-center gap-2 justify-content-end">
                                <button class="ct_action_btn ct_accept_green w-auto px-2 ct_animated_action_1">
                                 <span>Accept</span>
@@ -48,12 +48,42 @@
                                  Reject
                              </button>
                          </div>
-                     </td>
-                 </tr>
-             </tbody>
-         </table>
-     </div>
-   
+                     </td> -->
+                        <td>
+                            <div class="d-flex align-items-center gap-2 justify-content-end">
+                                <!-- Show both buttons if status is 0 -->
+                                <ng-container *ngIf="row.status === 0">
+                                    <button (click)="acceptUser(row.id)"
+                                        class="ct_action_btn ct_accept_green w-auto px-2 ct_animated_action_1">
+                                        <span>Accept</span>
+                                    </button>
+                                    <button (click)="rejectUser(row.id)"
+                                        class="ct_action_btn ct_dlt_btn w-auto px-2 ct_animated_action_1">
+                                        Reject
+                                    </button>
+                                </ng-container>
+                                <!-- Show only Accept button if status is 1 -->
+                                <ng-container *ngIf="row.status === 1">
+                                    <button class="ct_action_btn ct_accept_green w-auto px-2 ct_animated_action_1">
+                                        <span>Accept</span>
+                                    </button>
+                                </ng-container>
+                                <!-- Show only Reject button if status is 2 -->
+                                <ng-container *ngIf="row.status === 2">
+                                    <button class="ct_action_btn ct_dlt_btn w-auto px-2 ct_animated_action_1">
+                                        Reject
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <div *ngIf="(data?.length == 0)" class="no-item-found">
+                    No results found
+                </div>
+            </table>
+        </div>
+
     </section>
 
- </div>
+</div>

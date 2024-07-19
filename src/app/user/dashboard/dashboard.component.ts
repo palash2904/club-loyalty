@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 @Component({
   selector: 'app-dashboard',
@@ -99,6 +100,7 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.getUsersData();
     this.getData();
+    this.initUpdateForm();
   }
 
   getData() {
@@ -252,6 +254,81 @@ export class DashboardComponent {
       document.body.removeChild(link);
     }
   }
+
+
+  updateForm!: FormGroup; 
+  updateDet: any;
+  updateId: any;
+  UploadedFile: File | null = null;
+  @ViewChild('closeModal2') closeModal2!: ElementRef;
+  
+  patchUpdate(details: any) {
+    this.updateDet = details;
+    this.updateId = details.id;
+    this.initUpdateForm();
+  }
+
+  initUpdateForm() {
+    this.updateForm = new FormGroup({
+      full_name: new FormControl(this.updateDet?.full_name),
+      nick_name: new FormControl(this.updateDet?.nick_name),
+      partner: new FormControl(this.updateDet?.partner),
+      image: new FormControl(null),
+    })
+  }
+
+  handleFileInput(event: any) {
+    const file = event.target.files[0];
+    const img = document.getElementById('blah') as HTMLImageElement;
+
+    if (img && file) {
+      img.style.display = 'block';
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files && inputElement.files.length > 0) {
+      this.UploadedFile = inputElement.files[0];
+    }
+
+  }
+
+  onUpdate() {
+    console.log()
+    this.updateForm.markAllAsTouched();
+      const formURlData = new FormData();
+      formURlData.set('full_name', this.updateForm.value.full_name)
+      formURlData.set('nick_name', this.updateForm.value.nick_name)
+      if(this.UploadedFile){
+        formURlData.append('image', this.UploadedFile);
+      }
+      //formURlData.append('image', this.UploadedFile);
+      formURlData.set('partner', this.updateForm.value.partner)
+      formURlData.set('userId', this.updateId)
+      this.service.postAPIFormData('/admin/userEditProfile', formURlData).subscribe({
+        next: (resp) => {
+          if (resp.success === true) {
+            this.closeModal2.nativeElement.click();
+            // this.toastr.success(resp.message);
+            this.toastr.success('Update successful!');
+            this.getUsersData();
+            this.UploadedFile = null;
+          } else {
+            this.toastr.warning(resp.message);
+          }
+          //this.newForm.reset();  
+        },
+        error: error => {
+          this.toastr.error('Something went wrong.');
+          console.log(error.message)
+        }
+      })
+  }
+
 
 
 }

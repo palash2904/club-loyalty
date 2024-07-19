@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 //import { AngularFireMessaging } from '@angular/fire/messaging';
 import * as firebase from 'firebase/compat';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 import { getMessaging, getToken } from 'firebase/messaging'
 import { environment } from 'src/environments/environment';
 
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-
+  totalMessagesSignal = signal(0);
   apiUrl = environment.baseUrl
 
   constructor(private http: HttpClient, private toastr: ToastrService, private afMessaging: AngularFireMessaging) { }
@@ -25,6 +25,24 @@ export class UserService {
       'Authorization': `Bearer ${authToken}`
     });
     return this.http.get(this.apiUrl + url, { headers: headers })
+  };
+
+  notifySer(url: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.get(this.apiUrl + url, { headers: headers })
+  }
+
+  getApi1(url: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.get(url, { headers: headers })
   };
 
   gdeleteApi(url: any): Observable<any> {
@@ -45,6 +63,14 @@ export class UserService {
     return this.http.post(this.apiUrl + url, data, { headers: headers })
   };
 
+  postAPIFormData(url: any, data: any): Observable<any> {
+    const authToken = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.post(this.apiUrl + url, data, { headers: headers })
+  };
+
   postAPIJson(url: any, data: any): Observable<any> {
     const authToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -54,6 +80,14 @@ export class UserService {
     return this.http.post(this.apiUrl + url, data, { headers: headers });
   }
 
+  // postApi2(url: any): Observable<any> {
+  //   const authToken = localStorage.getItem('token');
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Authorization': `Bearer ${authToken}`
+  //   });
+  //   return this.http.post(this.apiUrl + url, { headers: headers })
+  // };
 
   currentMessage = new BehaviorSubject(null);
 
@@ -96,6 +130,36 @@ export class UserService {
           console.error('Error receiving message', error);
         }
       );
+  }
+
+
+  notify: boolean = false;
+
+  setNot(not: boolean) {
+    //console.log('this.not====>', not)
+    this.notify = not;
+  }
+
+  getNot() {
+    //console.log('this.notify====>', this.notify)
+    return this.notify;
+  }
+
+  // notification: any[] = [];
+
+  // setMsgNotif(notify: any) {
+  //   this.notification = notify;
+  // }
+
+  // getMsgNotif() {
+  //   //console.log('this.notify====>', this.notify)
+  //   return this.notification;
+  // }
+  private notificationsSource = new Subject<any[]>();
+  notifications$ = this.notificationsSource.asObservable();
+
+  setNotifications(notifications: any[]) {
+    this.notificationsSource.next(notifications);
   }
 
 }

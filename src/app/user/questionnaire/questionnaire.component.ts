@@ -20,9 +20,9 @@ export class QuestionnaireComponent {
   }
 
   getEventData() {
-    this.service.getApi('/admin/events').subscribe({
+    this.service.getApi('/admin/userAnswered').subscribe({
       next: resp => {
-        this.data = resp.events;
+        this.data = resp.UserAnswered;
       },
       error: error => {
         console.log(error.message)
@@ -48,22 +48,22 @@ export class QuestionnaireComponent {
       reverseButtons: true,
       confirmButtonColor: "#b92525",
     })
-      // .then((result) => {
-      //   if (result.isConfirmed) {
-      //     const formURlData = new URLSearchParams();
-      //     formURlData.set('id', id);
-      //     this.service.gdeleteApi(`/admin/event/${id}`).subscribe({
-      //       next: resp => {
-      //         console.log(resp)
-      //         this.toastr.success(resp.message)
-      //         this.getEventData();
-      //       },
-      //       error: error => {
-      //         console.log(error.message)
-      //       }
-      //     });
-      //   }
-      // });
+      .then((result) => {
+        if (result.isConfirmed) {
+          const formURlData = new URLSearchParams();
+          formURlData.set('id', id);
+          this.service.gdeleteApi(`/admin/userAnswered/${id}`).subscribe({
+            next: resp => {
+              console.log(resp)
+              this.toastr.success(resp.message)
+              this.getEventData();
+            },
+            error: error => {
+              console.log(error.message)
+            }
+          });
+        }
+      });
   }
 
 

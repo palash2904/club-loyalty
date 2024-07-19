@@ -29,3 +29,54 @@ span.ct_msg_notify_1 {
 }
 
 
+
+.ct_special_msg {
+    background-color: #fff;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    border-radius: 5px;
+    max-width: 300px;
+}
+.ct_special_msg_user_info {
+    border-left: 6px solid #fe2f7a;
+    border-radius: 5px;
+    padding: 4px 5px;
+    background-color: #F5F5F5;
+}
+.ct_special_msg_user_info h6 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+.ct_special_msg_user_info P {
+    font-size: 12px;
+    font-weight: 500;
+    color: #7b7575;
+}
+
+.ct_special_msg_user_info img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+}
+h6.ct_message_older_new_p {
+    text-align: center;
+    display: block;
+    padding-block: 3px;
+    border-left-style: none;
+    border-right-style: none;
+    position: relative;
+    z-index: 1;
+    width: max-content;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+span.ct_line_msg_12 {
+    
+    height: 1px;
+    background: #d8d8d8;
+    width: 100px;
+    display: block;
+}

@@ -1,133 +1,442 @@
-<div class="ct_middle_cnt">
-    <section class="mb-5">
-        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
-            <h2 class="ct_h2">Message</h2>
+<div class="c_main_div" [ngClass]="{ 'ct_active': isMenuActive }">
+    <!-- <app-sidemenu></app-sidemenu> -->
+    <div class="ct_sidebar">
+        <div class="ct_close_btn" (click)="closeMenuClick()">
+            <i class="fa-solid fa-xmark"></i>
         </div>
-        <section class="message-area">
-            <div class="chat-area row">
-                <!-- chatlist -->
-                <div class=" col-md-4">
-                    <div class="chatlist">
-                        <div class="modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <div class="chat-header">
-                                    <div class="msg-search">
-                                        <input type="text" class="form-control" id="inlineFormInputGroup"
-                                            placeholder="Search" aria-label="search">
-                                    </div>
-                                </div>
+        <div class="ct_logo">
+            <img src="assets/img/logo.svg" alt="">
+        </div>
+        <ul class="mb-0 ps-0 ct_menu_links mt-5">
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/dashboard') }"><a routerLink="/user/main/dashboard"><i
+                        class="fa-solid fa-house me-2"></i>Home</a></li>
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/event') }"><a routerLink="/user/main/event"><i
+                        class="fa-solid fa-calendar-check me-2"></i>Event</a></li>
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/offers') }"><a routerLink="/user/main/offers"><i
+                        class="fa-solid fa-medal me-2"></i>Offers</a></li>
+    
+            <li class="ct_custom_style_dropdown dropdown"><a href="javascript:void(0)" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                    aria-expanded="false"><span><i class="fa-solid fa-file-circle-question"></i> Questionnaire</span><i
+                        class="fa-solid fa-chevron-down" style="margin-left: 10px;"></i></a>
+                <ul class="  dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li (click)="closeMenuClick()" [ngClass]="{ '': isActive('user/main/questionnaire') }"><a class="dropdown-item"
+                            routerLink="/user/main/questionnaire">Questionnaire</a></li>
+                    <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/add-question') }"><a class="dropdown-item"
+                            routerLink="/user/main/add-question">Add Question</a></li>
+                </ul>
+            </li>
+       
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/gift-card') }">
+                <a routerLink="/user/main/gift-card"><i class="fa-solid fa-message me-2"></i>Gift Card</a>
+            </li>
+    
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/card-game') }">
+                <a routerLink="/user/main/card-game"><i class="fa-solid fa-message me-2"></i>Scratch Card</a>
+            </li>
+    
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/incoming-users') }">
+                <a routerLink="/user/main/incoming-users"><i class="fa-solid fa-message me-2"></i>Incoming-Users</a>
+            </li>
+    
+            <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/chat1') }">
+                <a routerLink="/user/chat1"><i class="fa-solid fa-message me-2"></i>Chat</a>
+            </li>
+    
+            <!-- <li (click)="closeMenuClick()" [ngClass]="{ 'active': isActive('user/main/notification') }">
+                <a routerLink="/user/main/notification"><i class="fa-solid fa-message me-2"></i>Notification</a>
+            </li> -->
+    
+        </ul>
+    </div>
 
-                                <div class="modal-body mt-4">
-                                    <!-- chat-list -->
-                                    <div class="chat-lists">
-                                        <div class="chat-list">
-                                            <!-- <a *ngFor="let data of roomId" [routerLink]="['/chat1/chatbox', data.chatRoomId]" class="d-flex align-items-center"> -->
-                                            <a *ngFor="let data of userData" (click)="selectUser(data)"
-                                                class="d-flex align-items-center">
-                                                <div class="flex-shrink-0">
-                                                    <img class="img-fluid ct_chat_profile_12"
-                                                    [src]="data.avatar_url" alt="img" >
-                                                  
-                                                    <!-- <span class="active"></span> -->
-                                                </div>
-                                                <div class="flex-grow-1 ms-3 d-flex align-items-center gap-2 justify-content-between" style="cursor: pointer" >
-                                                    <h3 class="mb-0">{{data.full_name}}</h3>
-                                                    <!-- <span *ngIf="newMessageCounts[data.id] > 0"
-                                                     class="ct_msg_notify_1 me-1">{{ newMessageCounts[data.id] }}</span> -->
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- chat-list -->
+    <div class="ct_right_content">
+        <div class="ct_right_header">
+            <div class="ct_toggle_bar" (click)="openMenuClick()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+            <div class="d-flex  gap-2 ms-auto position-relative">
+
+                <div class="ct_notification" (click)="toggleNotificationDrop()">
+                    <div class="ct_notify_icon_35">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+        
+                    <div class="ct_notification_drop" [class.show]="showNotificationDrop">
+                        <ul>
+                            <li *ngFor="let notification of bellNotifications">
+                                <img [src]="notification.avatar_url" alt="">
+                                <div class="ct_notification_cnt">
+                                    <h6 class="mb-0">{{ notification.content }}</h6>
+                                    <small>{{ notification.createdAt | date:'shortTime' }}</small>
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <!-- chatlist -->
 
+                <div class="ct_my_account dropdown ms-auto">
+                    <button class="ct_custom_btn py-2 px-3 w-auto" data-bs-toggle="modal" data-bs-target="#ct_add_event12">
+                        <i class="fa-solid fa-paper-plane"></i> 
+                    </button>
+                </div> 
 
-                <div class=" col-md-8">
-                    <!-- chatbox -->
-                    <div class="chatbox">
-                        <div class="modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <div class="msg-head">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0">
-                                                    <img class="img-fluid ct_chat_profile_12"
-                                                    [src]="this.avatar_url" alt="img" >
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h3 class="mb-0">{{avatar_name}}</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <ul class="moreoption">
-                                                <li class="navbar nav-item dropdown">
-                                                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Delete
-                                                                Chat</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="modal-body">
-                                    <div class="msg-body" *ngFor="let msg of roomMsg" #message>
-                                        <ul>
-                                            <li class="sender" *ngIf="msg.senderId == chatId">
-                                                <p> {{msg.messageContent}} </p>
-                                                <span
-                                                    class="time">{{formatTimestamp(msg.messageTimeStampInMillis)}}</span>
-                                            </li>
-
-                                            <li class="repaly" *ngIf="userId == msg.senderId">
-                                                <p>{{msg.messageContent}}</p>
-                                                <span
-                                                    class="time">{{formatTimestamp(msg.messageTimeStampInMillis)}}</span>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-
-
-                                <div class="send-box">
-                                    <form [formGroup]="newForm">
-                                        <input type="text" class="form-control" aria-label="message…"
-                                            placeholder="Write message…" formControlName="message">
-                                        <div class="d-flex align-items-center">
-                                            <div class="send-btns">
-                                                <div class="attach">
-                                                    <!-- <div class="button-wrapper">
-                                                        <span class="label">
-                                                            <i class="fa-solid fa-link"></i>
-                                                        </span><input type="file" name="upload" id="upload"
-                                                            class="upload-box" placeholder="Upload File"
-                                                            aria-label="Upload File" formControlName="file" 
-                                                            (change)="handleCommittedFileInput($event)">
-                                                    </div> -->
-                                                </div>
-                                            </div>
-                                            <button (click)="sendMessage()" type="button"><i class="fa fa-paper-plane"
-                                                    aria-hidden="true"></i>Send</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <app-chatbox></app-chatbox>
-                    <router-outlet></router-outlet> -->
+                <div class="ct_my_account dropdown ms-auto">
+                    <button class="ct_custom_btn py-2 px-4 w-auto dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        My Account
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" routerLink="/user/main/my-profile">My Profile</a></li>
+                        <li><a class="dropdown-item" routerLink="/user/main/change-password">Change Password</a></li>
+                        <li> <a class="dropdown-item" (click)="logOut()">Log Out</a></li>
+                    </ul>
                 </div>
             </div>
+        </div>
+        
+
+        <div class="ct_middle_cnt">
+            <section class="mb-0">
+                <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+                    <h2 class="ct_h2">Message</h2>
+                </div>
+            </section>
+            <section class="message-area">
+                <div class="chat-area row">
+                    <!-- chatlist -->
+                    <div class=" col-md-4">
+                        <div class="chatlist">
+                            <div class="modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="chat-header">
+                                        <div class="msg-search">
+                                            <input type="text" class="form-control" id="inlineFormInputGroup"
+                                                placeholder="Search" aria-label="search" [(ngModel)]="searchQuery">
+                                        </div>
+                                    </div>
+        
+                                    <div class="modal-body mt-4">
+                                        <!-- chat-list -->
+                                        <div class="chat-lists">
+                                            <div class="chat-list" (click)="openChat()">
+                                                <!-- <a *ngFor="let data of roomId" [routerLink]="['/chat1/chatbox', data.chatRoomId]" class="d-flex align-items-center"> -->
+                                                <a *ngFor="let data of userData | filter:searchQuery; let i = index"
+                                                    (click)="selectUser(data)" class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <img class="img-fluid ct_chat_profile_12" [src]="data.avatar_url"
+                                                            alt="img">
+        
+                                                        <!-- <span class="active"></span> -->
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3 d-flex  gap-2 justify-content-between"
+                                                        style="cursor: pointer">
+                                                        <div style="flex: 1;">
+                                                            <h3 class="mb-0">{{data.full_name}}</h3>
+        
+        
+                                                            <div
+                                                                class="d-flex align-items-center gap-2 justify-content-between; w-100">
+                                                                <p>{{ data.lastMsg }}</p>
+        
+                                                                <span class="ms-auto text-dark ct_fw_600"
+                                                                    style="font-size: 12px; white-space: nowrap;">{{formatTimestamp(data.timestamp)}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <span *ngIf="unreadMessagesLength > 0"
+                                                                     class="ct_msg_notify_1 me-1">{{ unreadMessagesLength }}</span> -->
+                                                        <span *ngIf="unreadMessagesCount[data.id] > 0"
+                                                            class="ct_msg_notify_1 me-1">{{ unreadMessagesCount[data.id]
+                                                            }}</span>
+                                                    </div>
+                                                </a>
+                                                <div *ngIf="(!userData || (userData | filter: searchQuery)?.length === 0)"
+                                                    class="no-item-found">
+                                                    No results found
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- chat-list -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- chatlist -->
+        
+        
+                    <div class="col-md-8">
+                        <!-- chatbox -->
+                        <div class="chatbox" [ngClass]="{ 'showbox': isChatActive }">
+                            <div class="modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="msg-head mb-4" *ngIf="showMsg">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="chat-icon" (click)="closeChat()"><i
+                                                            class="fa-solid fa-chevron-left"></i></span>
+                                                    <div class="flex-shrink-0">
+                                                        <img class="img-fluid ct_chat_profile_12" [src]="this.avatar_url"
+                                                            alt="img">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h3 class="mb-0">{{avatar_name}}</h3>
+                                                    </div>
+        
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-4">
+                                                            <ul class="moreoption">
+                                                                <li class="navbar nav-item dropdown">
+                                                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                            class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a class="dropdown-item" href="#">Delete
+                                                                                Chat</a></li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </div> -->
+                                        </div>
+                                    </div>
+        
+        
+                                    <!-- <div class="modal-body" #scrollMe [scrollTop]="scrollMe?.scrollHeight">
+                                                    <div class="msg-body" *ngFor="let msg of roomMsg">
+                                                        <ul>
+                
+                                                            <li class="sender" *ngIf="!msg.event && msg.senderId == chatId">
+                                                                <p> {{msg.messageContent}}</p>
+                                                                <span
+                                                                    class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                            </li>
+                
+                
+                                                            <li class="repaly" *ngIf="userId == msg.senderId">
+                                                                <p>{{msg.messageContent}}</p>
+                                                                <span
+                                                                    class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                            </li>
+                
+                                                            <li class="ct_special_msg" *ngIf="msg.event && msg.senderId == chatId">
+                                                                <div
+                                                                    class="ct_special_msg_user_info d-flex align-items-center justify-content-between ">
+                                                                    <div>
+                                                                        <h6>{{msg.event.title}}</h6>
+                                                                        <p class="mb-0">
+                                                                            {{formatTimestamp1(msg.messageTimeStampInMillis)}}</p>
+                                                                    </div>
+                                                                    <img [src]="msg.event.image_url" alt="">
+                                                                </div>
+                                                                <p class="mb-0 pt-1">{{msg.messageContent}}</p>
+                                                            </li>
+                
+                
+                                                        </ul>
+                                                    </div>
+                                                </div> -->
+                                    <div class="modal-body" #scrollMe [scrollTop]="scrollMe?.scrollHeight">
+                                        <div class="msg-body">
+        
+                                            <!-- Older messages -->
+                                            <div *ngIf="olderMessages.length > 0">
+                                                <h6 class="ct_message_older_new_p">Older Messages</h6>
+                                                <div *ngFor="let msg of olderMessages">
+                                                    <ul>
+        
+                                                        <li class="sender" *ngIf="!msg.event && msg.senderId == chatId">
+                                                            <p> {{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+        
+                                                        <li class="repaly" *ngIf="userId == msg.senderId">
+                                                            <p>{{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+                                                        <li class="ct_special_msg" *ngIf="msg.event && msg.senderId == chatId">
+                                                            <div
+                                                                class="ct_special_msg_user_info d-flex align-items-center justify-content-between ">
+                                                                <div>
+                                                                    <h6>{{msg.event.title}}</h6>
+                                                                    <p class="mb-0">
+                                                                        {{formatTimestamp1(msg.messageTimeStampInMillis)}}
+                                                                    </p>
+                                                                </div>
+                                                                <img [src]="msg.event.image_url" alt="">
+                                                            </div>
+                                                            <p class="mb-0 pt-1">{{msg.messageContent}}</p>
+                                                        </li>
+        
+        
+                                                    </ul>
+                                                </div>
+        
+                                            </div>
+        
+                                            <!-- Yesterday's messages -->
+                                            <div *ngIf="yesterdayMessages.length > 0">
+                                                <h6 class="ct_message_older_new_p"> <span
+                                                        class="ct_line_msg_12"></span>Yesterday <span
+                                                        class="ct_line_msg_12"></span></h6>
+                                                <div *ngFor="let msg of yesterdayMessages">
+                                                    <ul>
+        
+                                                        <li class="sender" *ngIf="!msg.event && msg.senderId == chatId">
+                                                            <p> {{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+        
+                                                        <li class="repaly" *ngIf="userId == msg.senderId">
+                                                            <p>{{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+                                                        <li class="ct_special_msg" *ngIf="msg.event && msg.senderId == chatId">
+                                                            <div
+                                                                class="ct_special_msg_user_info d-flex align-items-center justify-content-between ">
+                                                                <div>
+                                                                    <h6>{{msg.event.title}}</h6>
+                                                                    <p class="mb-0">
+                                                                        {{formatTimestamp1(msg.messageTimeStampInMillis)}}
+                                                                    </p>
+                                                                </div>
+                                                                <img [src]="msg.event.image_url" alt="">
+                                                            </div>
+                                                            <p class="mb-0 pt-1">{{msg.messageContent}}</p>
+                                                        </li>
+        
+        
+                                                    </ul>
+                                                </div>
+        
+                                            </div>
+        
+                                            <!-- Today's messages -->
+                                            <div *ngIf="todayMessages.length > 0">
+                                                <h6 class="ct_message_older_new_p"><span
+                                                        class="ct_line_msg_12"></span>Today<span class="ct_line_msg_12"></span>
+                                                </h6>
+                                                <div *ngFor="let msg of todayMessages">
+                                                    <ul>
+        
+                                                        <li class="sender" *ngIf="!msg.event && msg.senderId == chatId">
+                                                            <p> {{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+        
+                                                        <li class="repaly" *ngIf="userId == msg.senderId">
+                                                            <p>{{msg.messageContent}}</p>
+                                                            <span
+                                                                class="time">{{formatTimestamp1(msg.messageTimeStampInMillis)}}</span>
+                                                        </li>
+        
+                                                        <li class="ct_special_msg" *ngIf="msg.event && msg.senderId == chatId">
+                                                            <div
+                                                                class="ct_special_msg_user_info d-flex align-items-center justify-content-between ">
+                                                                <div>
+                                                                    <h6>{{msg.event.title}}</h6>
+                                                                    <p class="mb-0">
+                                                                        {{formatTimestamp1(msg.messageTimeStampInMillis)}}
+                                                                    </p>
+                                                                </div>
+                                                                <img [src]="msg.event.image_url" alt="">
+                                                            </div>
+                                                            <p class="mb-0 pt-1">{{msg.messageContent}}</p>
+                                                        </li>
+        
+        
+                                                    </ul>
+                                                </div>
+        
+                                            </div>
+        
+                                        </div>
+                                    </div>
+        
+        
+        
+                                    <div class="send-box" *ngIf="showMsg">
+                                        <form [formGroup]="newForm">
+                                            <input type="text" class="form-control" aria-label="message…"
+                                                placeholder="Write message…" formControlName="message">
+                                            <div class="d-flex align-items-center">
+                                                <div class="send-btns">
+                                                    <div class="attach">
+                                                        <!-- <div class="button-wrapper">
+                                                                        <span class="label">
+                                                                            <i class="fa-solid fa-link"></i>
+                                                                        </span><input type="file" name="upload" id="upload"
+                                                                            class="upload-box" placeholder="Upload File"
+                                                                            aria-label="Upload File" formControlName="file" 
+                                                                            (change)="handleCommittedFileInput($event)">
+                                                                    </div> -->
+                                                    </div>
+                                                </div>
+                                                <button (click)="sendMessage()" type="button"><i class="fa fa-paper-plane"
+                                                        aria-hidden="true"></i>Send</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- <app-chatbox></app-chatbox>
+                                    <router-outlet></router-outlet> -->
+                    </div>
+                </div>
+            </section>
+        
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+<!-- Add Notification -->
+<div class="modal fade" id="ct_add_event12" tabindex="-1" aria-labelledby="ct_add_eventLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 pb-5">
+                <div class="ct_event_modal">
+                    <h2 class="text-center mb-5 ct_h2">Notification</h2>
+                    <form [formGroup]="newForm1">
+
+                        <div class="ct_formField mb-3">
+                            <label for="" class="mb-2 ct_fw_600">Message</label>
+                            <input type="text" required formControlName="body" />
+                            <div *ngIf="newForm1.controls['body'].invalid && newForm1.controls['body'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm1.controls['body'].errors?.['required']">Message is
+                                    required.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <button type="button" (click)="sendNotificationsToAll()"
+                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Send Notification</button>
+                        <button hidden type="button" class="btn btn-secondary" #closeModal
+                            data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

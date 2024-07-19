@@ -12,6 +12,9 @@ import { ChangePasswordComponent } from './profile/change-password/change-passwo
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { GiftCardComponent } from './gift-card/gift-card.component';
 import { IncomingUsersComponent } from './incoming-users/incoming-users.component';
+import { CardGameComponent } from './card-game/card-game.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { QrScannerComponent } from './qr-scanner/qr-scanner.component';
 
 const routes: Routes = [
   {
@@ -53,28 +56,41 @@ const routes: Routes = [
         path: "change-password",
         component: ChangePasswordComponent,
       },
-      {
-        path: 'chatbox/:roomId',
-        component: ChatboxComponent
-      },
+      // {
+      //   path: 'chatbox/:roomId',
+      //   component: ChatboxComponent
+      // },
       {
         path: "gift-card",
         component: GiftCardComponent,
       },
       {
+        path: "card-game",
+        component: CardGameComponent,
+      },
+      {
         path: "incoming-users",
         component: IncomingUsersComponent,
       },
+      {
+        path: "notification",
+        component: NotificationsComponent,
+      },
+      { path: 'qr-scanner', component: QrScannerComponent },
     ],
   },
   {
-    path: 'chat1',
+    path: "chat1",
     component: ChatComponent,
-    children: [
-      //{ path: 'chat', component: ChatComponent },
-      { path: 'chatbox/:roomId', component: ChatboxComponent } // Define route parameter roomId
-    ]
-  }
+  },
+  // {
+  //   path: 'chat1',
+  //   component: ChatComponent,
+  //   children: [
+  //     //{ path: 'chat', component: ChatComponent },
+  //     { path: 'chatbox/:roomId', component: ChatboxComponent } // Define route parameter roomId
+  //   ]
+  // }
 ];
 
 @NgModule({

@@ -1,0 +1,13 @@
+    <!-- app.component.html -->
+    <!-- <button (click)="openScanner()">Open Scanner</button>
+
+    <div *ngIf="isScannerVisible">
+        <zxing-scanner [formats]="formats" (scanSuccess)="handleQrCodeResult($event)">
+        </zxing-scanner>
+   
+    </div> -->
+
+    <div>
+        <video #video id="video" width="100%" height="auto" autoplay playsinline></video>
+        <canvas #canvas id="canvas" hidden></canvas>
+    </div>

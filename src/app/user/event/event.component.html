@@ -27,7 +27,7 @@
                             </div>
                         </td>
                         <td>{{row.title}}</td>
-                        <td>{{row.date}}</td>
+                        <td>{{row.date | date: 'dd-MM-yyyy'}}</td>
                         <td>{{row.time}}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2 justify-content-end">
@@ -43,7 +43,7 @@
                     </tr>
                 </tbody>
                 <div *ngIf="(data?.length == 0)" class="no-item-found">
-                    No item found
+                    No results found
                 </div>
             </table>
         </div>
@@ -109,14 +109,12 @@
                             </div>
                         </div>
                         <button type="button" (click)="addEvent()"
-                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Save
-                            Changes</button>
+                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Event</button>
                         <button hidden type="button" class="btn btn-secondary" #closeModal
                             data-bs-dismiss="modal">Close</button>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -147,9 +145,9 @@
                                 <div class="ct_edt_img">
                                     <img id="blah" src="#" alt="Uploaded Image" [src]="updateDet?.image_url">
                                 </div>
-
                             </label>
                         </div>
+                        
                         <div class="ct_formField mb-3 ">
                             <label for="" class="mb-2 ct_fw_600">Title</label>
                             <input type="text" required formControlName="title" value="DJ Night with bablo" />
@@ -162,7 +160,7 @@
                         </div>
                         <div class="ct_formField mb-3">
                             <label for="" class="mb-2 ct_fw_600">Date</label>
-                            <input type="text" required formControlName="date" value="27/04/2024" />
+                            <input type="date" required formControlName="date" value="27/04/2024" />
                             <div *ngIf="updateForm.controls['date'].invalid && updateForm.controls['date'].touched"
                                 class="error-message">
                                 <div *ngIf="updateForm.controls['date'].errors?.['required']">Date is

@@ -18,12 +18,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserService } from './services/user.service';
 //import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { initializeApp } from 'firebase/app';
+import { ScrollToBottomDirective } from './services/scroll-to-bottom.directive';
+import { FilterPipe } from './services/pipe/filter.pipe';
 initializeApp(environment.firebaseConfig)
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ScrollToBottomDirective,
+    //FilterPipe
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

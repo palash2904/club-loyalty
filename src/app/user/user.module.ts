@@ -19,6 +19,11 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GiftCardComponent } from './gift-card/gift-card.component';
 import { IncomingUsersComponent } from './incoming-users/incoming-users.component';
+import { CardGameComponent } from './card-game/card-game.component';
+import { FilterPipe } from '../services/pipe/filter.pipe';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { QrScannerComponent } from './qr-scanner/qr-scanner.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +40,21 @@ import { IncomingUsersComponent } from './incoming-users/incoming-users.componen
     ChangePasswordComponent,
     ChatboxComponent,
     GiftCardComponent,
-    IncomingUsersComponent
+    IncomingUsersComponent,
+    CardGameComponent,
+    FilterPipe,
+    NotificationsComponent,
+    QrScannerComponent
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    ZXingScannerModule
     //AngularFireModule.initializeApp(environment.firebaseConfig)
+  ], exports:[
+    FilterPipe
   ]
 })
 export class UserModule { }

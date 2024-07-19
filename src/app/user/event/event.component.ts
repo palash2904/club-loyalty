@@ -87,7 +87,7 @@ export class EventComponent {
       formURlData.set('date', this.newForm.value.date)
       formURlData.append('image', this.UploadedFile);
       formURlData.set('time', this.newForm.value.time)
-      this.service.postAPI('/admin/addEvent', formURlData).subscribe({
+      this.service.postAPIFormData('/admin/addEvent', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
@@ -122,18 +122,20 @@ export class EventComponent {
       //formURlData.append('image', this.UploadedFile);
       formURlData.set('time', this.updateForm.value.time)
       formURlData.set('eventId', this.updateId)
-      this.service.postAPI('/admin/editEvent', formURlData).subscribe({
+      this.service.postAPIFormData('/admin/editEvent', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
             this.closeModal2.nativeElement.click();
             // this.toastr.success(resp.message);
             this.toastr.success('Update successful!');
             this.getEventData()
+          } else {
+            this.toastr.warning(resp.message);
           }
           //this.newForm.reset();  
         },
         error: error => {
-          this.toastr.warning('Something went wrong.');
+          this.toastr.error('Something went wrong.');
           console.log(error.message)
         }
       })

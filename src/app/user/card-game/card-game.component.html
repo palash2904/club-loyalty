@@ -1,7 +1,7 @@
 <div class="ct_middle_cnt">
     <section class="mb-5">
         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
-            <h2 class="ct_h2">Gift Cards</h2>
+            <h2 class="ct_h2">Scratch Card</h2>
             <button class="ct_custom_btn py-2 px-4 w-auto" data-bs-toggle="modal" data-bs-target="#ct_add_gift">
                 <i class="fa-solid fa-plus"></i> Add Card
             </button>
@@ -12,8 +12,9 @@
                     <tr>
                         <th>No.</th>
                         <th>Title</th>
-                        <th>Points</th>
-                        <th>End Date</th>
+                        <th>Success Rate</th>
+                        <th>Total Scratches</th>
+                        <th>Total Wins</th>
                         <th class="text-end">Action</th>
                     </tr>
                 </thead>
@@ -24,10 +25,13 @@
                             {{row.title}}
                         </td>
                         <td>
-                            {{row.points}}
+                            {{row.successRate*100}}%
                         </td>
                         <td>
-                            {{row.endDate | date:'dd-MM-yyyy'}}
+                            {{row.totalScratches}}
+                        </td>
+                        <td>
+                            {{row.totalWins}}
                         </td>
 
                         <td>
@@ -74,25 +78,21 @@
                             </div>
                         </div>
                         <div class="ct_formField mb-3">
-                            <label for="" class="mb-2 ct_fw_600">Points</label>
-                            <input type="number" required formControlName="points" />
-                            <div *ngIf="newForm.controls['points'].invalid && newForm.controls['points'].touched"
+                            <label for="" class="mb-2 ct_fw_600">Success Rate</label>
+                            <input type="number" required formControlName="successRate" />
+                            <!-- <div *ngIf="newForm.controls['successRate'].invalid && newForm.controls['successRate'].touched"
                                 class="error-message">
-                                <div *ngIf="newForm.controls['points'].errors?.['required']">Points is
+                                <div *ngIf="newForm.controls['successRate'].errors?.['required']">Success rate is
                                     required.
                                 </div>
-                            </div>
+                            </div> -->
+                            <div *ngIf="newForm.controls['successRate'].invalid && newForm.controls['successRate'].touched" class="error-message">
+                                <div *ngIf="newForm.controls['successRate'].errors?.['required']">Success rate is required.</div>
+                                <div *ngIf="newForm.controls['successRate'].errors?.['pattern']">Only whole numbers are allowed.</div>
+                                <div *ngIf="newForm.controls['successRate'].errors?.['range']">Success rate must be between 1 and 100.</div>
+                              </div>
                         </div>
-                        <div class="ct_formField mb-3">
-                            <label for="" class="mb-2 ct_fw_600">End Date</label>
-                            <input type="date" required formControlName="endDate" />
-                            <div *ngIf="newForm.controls['endDate'].invalid && newForm.controls['endDate'].touched"
-                                class="error-message">
-                                <div *ngIf="newForm.controls['endDate'].errors?.['required']">Date is
-                                    required.
-                                </div>
-                            </div>
-                        </div>
+
 
                         <button type="button" (click)="onSubmit()"
                             class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Card</button>
@@ -122,12 +122,8 @@
                             <input type="text" required="" formControlName="title" />
                         </div>
                         <div class="ct_formField mb-3 ">
-                            <label for="" class="mb-2 ct_fw_600">Points</label>
-                            <input type="number" required="" formControlName="points" />
-                        </div>
-                        <div class="ct_formField mb-3 ">
-                            <label for="" class="mb-2 ct_fw_600">End Date</label>
-                            <input type="date" required="" formControlName="endDate" />
+                            <label for="" class="mb-2 ct_fw_600">Success Rate</label>
+                            <input type="number" required="" formControlName="successRate" />
                         </div>
 
                         <button (click)="onUpdate()" type="button"

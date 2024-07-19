@@ -74,10 +74,12 @@ export class AddQuestionComponent {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
             this.newForm.reset();
+            this.getQuestionData();
+            this.toastr.success(resp.message);
+          } else {
+            this.toastr.warning(resp.message);
+            this.getQuestionData();
           }
-          
-          this.toastr.success(resp.message);
-          //this.getSupplyData()
         },
         error: error => {
           this.toastr.warning('Something went wrong.');
@@ -145,12 +147,13 @@ export class AddQuestionComponent {
             this.closeModal2.nativeElement.click();
             // this.toastr.success(resp.message);
             this.toastr.success('Update successful!');
-            this.getQuestionData()
-          }
-          //this.newForm.reset();  
+            this.getQuestionData();
+          } else {
+            this.toastr.warning('Update successful!');
+          }  
         },
         error: error => {
-          this.toastr.warning('Something went wrong.');
+          this.toastr.error('Something went wrong.');
           console.log(error.message)
         }
       })

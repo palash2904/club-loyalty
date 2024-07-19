@@ -16,7 +16,7 @@
                         <th>Price</th>
                         <th>Offer Price</th>
                         <th>Till Date </th>
-                        <th>Points </th>
+                        <!-- <th>Points </th> -->
                         <th class="text-end">Action</th>
                     </tr>
                 </thead>
@@ -31,8 +31,8 @@
                         <td>{{row.title}}</td>
                         <td>{{row.price}}</td>
                         <td>{{row.offerPrice}}</td>
-                        <td>{{row.endDate}}</td>
-                        <td>{{ getLevel(row.points) }}</td>
+                        <td>{{row.endDate | date:'dd-MM-yyyy'}}</td>
+                        <!-- <td>{{ getLevel(row.points) }}</td> -->
                         <td>
                             <div class="d-flex align-items-center gap-2 justify-content-end">
                                 <button class="ct_action_btn ct_edit_btn" data-bs-toggle="modal"
@@ -47,7 +47,7 @@
                     </tr>
                 </tbody>
                 <div *ngIf="(data?.length == 0)" class="no-item-found">
-                    No item found
+                    No results found
                 </div>
             </table>
         </div>
@@ -97,7 +97,7 @@
                             <label for="" class="mb-2 ct_fw_600">Price</label>
                             <div class="position-relative">
                                 <input type="number" required formControlName="price" class="ct_text_indent_16" />
-                                <span class="ct_price_tag_position">$</span>
+                                <span class="ct_price_tag_position">€</span>
 
                                 <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched"
                                     class="error-message">
@@ -112,7 +112,7 @@
                             <label for="" class="mb-2 ct_fw_600">Offer Price</label>
                             <div class="position-relative">
                                 <input type="number" required formControlName="offerPrice" class="ct_text_indent_16" />
-                                <span class="ct_price_tag_position">$</span>
+                                <span class="ct_price_tag_position">€</span>
 
                                 <div *ngIf="newForm.controls['offerPrice'].invalid && newForm.controls['offerPrice'].touched"
                                     class="error-message">
@@ -124,11 +124,10 @@
                             </div>
                         </div>
 
-                        <div class="ct_formField mb-3">
+                        <!-- <div class="ct_formField mb-3">
                             <label for="" class="mb-2 ct_fw_600">Points</label>
                             <div class="position-relative">
                                 <input type="number" required formControlName="points" class="ct_text_indent_16" />
-                                <span class="ct_price_tag_position">$</span>
 
                                 <div *ngIf="newForm.controls['points'].invalid && newForm.controls['points'].touched"
                                     class="error-message">
@@ -138,7 +137,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="ct_formField mb-3">
                             <label for="" class="mb-2 ct_fw_600">Till Date</label>
@@ -150,10 +149,10 @@
                                     required.
                                 </div>
                             </div>
-
                         </div>
+
                         <button type="button" (click)="onSubmit()"
-                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Save Changes</button>
+                            class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Offer</button>
                         <button hidden type="button" class="btn btn-secondary" #closeModal
                             data-bs-dismiss="modal">Close</button>
                     </form>
@@ -201,7 +200,7 @@
                             <label for="" class="mb-2 ct_fw_600">Price</label>
                             <div class="position-relative">
                                 <input type="text" required formControlName="price" class="ct_text_indent_16" />
-                                <span class="ct_price_tag_position">$</span>
+                                <!-- <span class="ct_price_tag_position">€</span> -->
 
                                 <div *ngIf="updateForm.controls['price'].invalid && updateForm.controls['price'].touched"
                                     class="error-message">
@@ -216,7 +215,7 @@
                             <label for="" class="mb-2 ct_fw_600">Offer Price</label>
                             <div class="position-relative">
                                 <input type="text" required formControlName="offerPrice" class="ct_text_indent_16" />
-                                <span class="ct_price_tag_position">$</span>
+                                <!-- <span class="ct_price_tag_position">€</span> -->
 
                                 <div *ngIf="updateForm.controls['offerPrice'].invalid && updateForm.controls['offerPrice'].touched"
                                     class="error-message">
@@ -233,7 +232,7 @@
 
                             <div *ngIf="updateForm.controls['endDate'].invalid && updateForm.controls['endDate'].touched"
                                 class="error-message">
-                                <div *ngIf="updateForm.controls['endDate'].errors?.['required']">Price is
+                                <div *ngIf="updateForm.controls['endDate'].errors?.['required']">Date is
                                     required.
                                 </div>
                             </div>
